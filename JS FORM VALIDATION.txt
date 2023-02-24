@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JavaScript Form validation</title>
+
+<script>
+// Defining a function to display error message
+function printError(elemId, hintMsg) {
+    document.getElementById(elemId).innerHTML = hintMsg;
+}
+
+// Defining a function to validate form
+function validateForm() {
+    // Retrieving the values of form elements
+    var name = document.contactForm.name.value;
+    var address = document.contactForm.address.value;
+    var email = document.contactForm.email.value;
+    var mobile = document.contactForm.mobile.value;
+    var zipcode = document.contactForm.zipcode.value;
+    var password=document.contactForm.password.value;
+    var verifypassword=document.contactForm.verifypassword.value;
+    var country = document.contactForm.country.value;
+    var gender = document.contactForm.gender.value;
+    var preferrences = [];
+    var checkboxes = document.getElementsByName("preferrences[]");
+    for(var i=0; i < checkboxes.length; i++) {
+        if(checkboxes[i].checked) {
+            // Populate hobbies array with selected values
+            preferrences.push(checkboxes[i].value);
+        }
+    }
+   
+// Defining error variables with a default value
+var nameErr = emailErr = phoneErr = countryErr = genderErr = addErr = zipErr = passErr = verrErr = true;
+ 
+   
+    // Validate name
+    if(name == "") {
+        printError("nameErr", "Please enter your name!");
+    } else {
+        var regex = /^[a-zA-Z\s]+$/;                
+        if(regex.test(name) === false) {
+            printError("nameErr", "Please enter a valid name!");
+        } else {
+            printError("nameErr", "");
+            nameErr = false;
+        }
+    }
+   
+    // Validate email address
+    if(email == "") {
+        printError("emailErr", "Please enter your email address!");
+    } else {
+        // Regular expression for basic email validation
+        var regex = /^\S+@\S+\.\S+$/;
+        if(regex.test(email) === false) {
+            printError("emailErr", "Please enter a valid email address!");
+        } else{
+            printError("emailErr", "");
+            emailErr = false;
+        }
+    }
+   
+   if(address == "") {
+        printError("addErr", "Please enter your address!");
+    } else {
+        printError("addErr", "");
+        addErr = false;
+    }
+    // Validate mobile number
+    if(mobile == "") {
+        printError("mobileErr", "Please enter your phone number!");
+    } else {
+        var regex = /^[1-9]\d{9}$/;
+        if(regex.test(mobile) === false) {
+            printError("mobileErr", "Please enter a valid 10 digit phone number!");
+        } else{
+            printError("mobileErr", "");
+            mobileErr = false;
+        }
+    }
+   if(zipcode == "") {
+        printError("zipErr", "Please enter your zipcode!");
+    } else {
+        printError("zipErr", "");
+        zipErr = false;
+    }
+   if(password == "") {
+        printError("passErr", "Please enter your password!");
+    } 
+       else if(password.length<6 || password.length>8){
+          printError("passErr", "Password must be within 6 to 8 characters!");
+        }
+        else {
+            printError("passErr", "");
+            passErr = false;
+        }
+    if(verifypassword == "") {
+        printError("verrErr", "Please re-enter your password!");
+    } 
+       else if(password!= verifypassword){
+          printError("verrErr", "Password doesn't match!");
+        }
+        else {
+            printError("verrErr", "");
+            verrErr = false;
+        }    
+        
+    // Validate country
+    if(country == "Select") {
+        printError("countryErr", "Please select your country!");
+    } else {
+        printError("countryErr", "");
+        countryErr = false;
+    }
+   
+    // Validate gender
+    if(gender == "") {
+        printError("genderErr", "Please select your gender!");
+    } else {
+        printError("genderErr", "");
+        genderErr = false;
+    }
+   
+    // Prevent the form from being submitted if there are any errors
+    if((nameErr || emailErr || phoneErr || countryErr || genderErr || zipErr || addErr || passErr || verrErr) == true)
+     {
+       return false;
+    } else {
+        // Creating a string from input data for preview
+        var dataPreview = "You've entered the following details: \n" +
+                          "Name: " + name + "\n" +
+                          "Email Address: " + email + "\n" +
+                          "Mobile Number: " + mobile + "\n" +
+                          "Country: " + country + "\n" +
+                          "Gender: " + gender + "\n";
+                          "Address: " + address + "\n";
+                          "Zipcode: " + zipcode + "\n";
+                          "Gender: " + gender + "\n";
+        if(preferrences.length) {
+            dataPreview += "preferrences: " + preferrences.join(", ");
+        }
+        // Display input data in a dialog box before submitting the form
+        alert(dataPreview);
+    }
+};
+</script>
+</head>
+<body>
+<center>
+<form name="contactForm" onsubmit="return validateForm()" method="post">
+    <h2>JAVASCRIPT FORM VALIDATION</h2>
+   <label>Name<span style="color:red">*: &nbsp </span></label>
+    <input type="text" name="name">   
+    <span style="color:red;" class="error" id="nameErr"></span><br><br>
+        
+    <label>Address:</label>
+        <input type="text" name="address">
+        <span style="color:red;align-content: center;" class="error" id="addErr"></span>
+        <br><br>
+     
+     <label>ZipCode<span style="color:red">*: </span></label>
+        <input type="text" name="zipcode" maxlength="10">
+        <span style="color:red;align-content: center;" class="error" id="zipErr"></span><br><br>
+        
+        
+      
+        <label>Country<span style="color:red">*:</span></label>
+        <select name="country">
+            <option>Select</option>
+            <option>Australia</option>
+            <option>India</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+        </select>
+        <span style="color:red;align-content: center;" class="error" id="countryErr"></span><br><br>
+       
+      
+      
+     
+        <label>Gender<span style="color:red">*:</span></label>
+        
+            <label><input type="radio" name="gender" value="male"> Male</label>
+            <label><input type="radio" name="gender" value="female"> Female</label>
+        <span style="color:red;align-content: center;" class="error" id="genderErr"></span><br><br>
+        
+      
+      
+        <label>Preferrences<span style="color:red">*:</span> </label>
+        
+            <label><input type="checkbox" name="preferrences[]" value="sports"> Red</label>
+            <label><input type="checkbox" name="preferrences[]" value="movies"> Green</label>
+            <label><input type="checkbox" name="preferrences[]" value="music"> Blue</label><br><br>
+       
+     
+        <label>Phone<span style="color:red">*: </span></label>
+        <input type="text" name="mobile" maxlength="10">
+      <span style="color:red;align-content: center;" class="error" id="mobileErr"></span><br><br>
+        
+        <label>Email<span style="color:red">*: </span></label>
+    <input type="text" name="email">   
+    <span style="color:red;" class="error" id="emailErr"></span><br><br>
+   
+        
+        <label>Password(6-8 Characters)<span style="color:red">*:</span></label>
+        <input type="text" name="password">
+        <span style="color:red;align-content: center;" class="error" id="passErr"></span><br><br>
+        
+        <label>Verify Password<span style="color:red">*:</span></label>
+        <input type="text" name="verifypassword">
+        <span style="color:red;align-content: center;" class="error" id="verrErr"></span><br><br>
+        
+    
+        <input type="submit" value="SEND">
+        <input type="submit" value="CLEAR">
+    
+</form>
+</center>
+</body>
+</html>
